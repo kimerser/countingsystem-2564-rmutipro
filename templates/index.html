@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <center>
+        <br>
+        <br>
+        <p class="fs-1">แก้ไขข้อมูลเริ่มต้น</p>
+    </center>
+    <!-- {% block conntent %}
+    {% endblock %} -->
+    <!-- <div class="container">
+        <form action="" method="post">
+            <div class="row">
+                <div class="col-sm">
+                    <label for="">ตั้งค่าเวลา</label>
+                    <input type="text" name="Time" id="Time">
+                </div>
+                <div class="col-sm">
+                    <label for="">เลื่อนซ้าย</label>
+                    <input type="text" name="left" id="left">
+                </div>
+                <div class="col-sm">
+                    <label for="">เลื่อนขวา</label>
+                    <input type="text" name="right" id="right">
+                </div>
+                <div class="col-sm">
+                    <button type="submit">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div> -->
+    <div class="container">
+        <div class="row">
+            {% for data in side %}
+
+
+            <div class="col-sm-4">
+                <form action="/delaytime" method="POST">
+                    <input type="number" name="delaytime">
+                    <input class="btn btn-primary btn-sm" type="submit" value="หน่วงเวลา">
+                    <br>หน่วงเวลา {{data[0]}}
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <form action="/update_left" method="POST">
+                    <input type="number" name="left">
+                    <input class="btn btn-primary btn-sm" type="submit" value="เลื่อนเส้นซ้าย">
+                    <br>ซ้าย {{data[1]}}
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <form action="/update_right" method="POST">
+                    <input type="number" name="right">
+                    <input class="btn btn-primary btn-sm" type="submit" value="เลื่อนเส้นขวา">
+                    <br> ขวา {{data[2]}}
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <h3 class="mt-5">Live Streaming</h3>
+            <div class="col-sm-5">
+                <img src="{{ url_for('video_feed') }}" width="100%">
+                <!-- <h2 class="mt-5">CAMERA APP by Hemanth Nag</h2> -->
+                <form method="post" action="{{ url_for('tasks') }}">
+                    <input class="btn btn-secondary" type="submit" value="Start/Stop" name="stop" />
+                    <input class="btn btn-secondary" type="submit" value="camera" name="camera" />
+                </form>
+            </div>
+            <div class="col-sm-7">
+                <form action="{{url_for('insert_fac')}}" method="POST">
+                    <div class="form-group row">
+                        <label for="" class="col-sm-1 col-form-label">ลำดับ</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="facId" id="facId" class="form-control" placeholder="ลำดับ"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-1 col-form-label">คณะ</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="fac" class="form-control" placeholder="คณะ" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-1 col-form-label">สาขา</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="department" class="form-control" placeholder="สาขา" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-1 col-form-label">จำนวน</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="num" class="form-control" placeholder="จำนวน" required>
+                        </div>
+                    </div>
+                    <div id="successAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+                    <div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-sm-7" align="center">
+                            <button type="submit" class="btn btn-primary">เพิ่ม</button>
+                            <br>
+                            <br>
+                            <select name="" id="">
+                                {% for data in datas %}
+                                <option value="{{data[0]}}">คณะ : {{data[0]}} : {{data[1]}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <div class="container">
+        <table class="table table-bordered">
+            <tr>
+                <th style="text-align:center">ลำดับ</th>
+                <th style="text-align:center">คณะ</th>
+                <th style="text-align:center">สาขา</th>
+                <th style="text-align:center">จำนวน</th>
+                <th style="text-align:center">แก้ไขข้อมูล</th>
+            </tr>
+            {% for data in datas %}
+            <tr align="center">
+                <td>{{data[0]}}</td>
+                <td>{{data[1]}}</td>
+                <td>{{data[2]}}</td>
+                <td>{{data[3]}}</td>
+                <td>
+                    <a href="" class="btn btn-warning btn-xs" data-toggle="modal"
+                        data-target="#modaledit{{data[0]}}">Edit</a>
+                    <a href="/delete/{{data[0]}}" class="btn btn-danger btn-xs"
+                        onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่?')">ลบ</a>
+                </td>
+            </tr>
+            <div id="modaledit{{data[0]}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">อัพเดทข้อมูลของท่าน</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/update" method="POST">
+                                <div class="form-group">
+                                    <label>ลำดับ:</label>
+                                    <input type="hidden" name="Id" value="{{data[0]}}">
+                                    <input type="text" class="form-control" name="facId" value="{{data[0]}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>คณะ:</label>
+                                    <input type="text" class="form-control" name="fac" value="{{data[1]}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>สาขา:</label>
+                                    <input type="text" class="form-control" name="department" value="{{data[2]}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>จำนวน:</label>
+                                    <input type="text" class="form-control" name="num" value="{{data[3]}}">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">อัพเดท</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </table>
+        {% for data in facsum %}
+        จำนวนนักศึกษาทั้งหมด {{data[0]}}
+        {% endfor %}
+    </div>
+
+    <hr>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
