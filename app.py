@@ -2,7 +2,7 @@ from typing import Type
 import mysql.connector
 from flask import Flask, render_template, redirect, request, url_for, Response, jsonify
 import logging
-import sys
+# import sys
 import cv2
 app = Flask(__name__)
 
